@@ -1,0 +1,77 @@
+body{
+
+}
+
+#tooldiv{
+    position: relative;
+    width: 460;
+    left: 30;
+    border: 1px solid black;
+    padding: 5;
+    padding-left: 10;
+}
+
+.toolbutton{
+    display: inline-block;
+    width: 50;
+    height: 50;
+    border: 1px solid black;
+}
+
+#maindiv{
+    position: relative;
+    height: 700;
+    width: 520;
+    /*border: 1px solid black;*/
+    margin: 10;
+}
+
+#dispdiv{
+    margin: 5;
+    height: 600;
+    border: 1px solid black;
+}
+
+#dispdiv span{
+    margin-left: 5;
+    margin-right: 5;
+}
+
+#playdiv{
+    margin: 5;
+    height: 70;
+    border: 1px solid black;
+}
+
+#playbtn{
+    position: relative;
+    top:10;
+    margin-left: 10;
+    margin-right: 10;
+}
+
+#bar{
+    position: relative;
+    top:10;
+}
+
+#infdiv{
+    position: relative;
+    left: 30;
+    width: 460;
+    height: 50;
+    border: 1px solid black;
+    font-size: 5;
+    padding: 5;
+}
+
+#infdiv input{
+    width: 50;
+    height: 30;
+}
+
+#infdiv span{
+    display: inline-block;
+    margin-left: 20;
+    margin-right: 20;
+}
