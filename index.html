@@ -3,10 +3,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/index.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
-<body>
-
+<body onload="Init();">
+    <div id='ts'>a</div>
     <div id="tooldiv">
         <div class="toolbutton" id="note"><img src="img/tool/note.png"></div>
         <div class="toolbutton" id="longnote"><img src="img/tool/longnote.png"></div>
@@ -34,8 +37,8 @@
             </span>
         </div>
         <div id="playdiv">
-            <span id="playbtn"><img src="img/play.png"></span>
-            <span id="bar"><img src="img/bar.png"></span>
+            <span id="playbtn"><img src="img/play.png" onclick="click_play();"></span>
+            <span id="bar"><input type="range" value="0"></span>
         </div>
     </div>
 
@@ -49,7 +52,17 @@
             <div>마디당 박자 수</div>
             <div><input type="number" value="8"></input></div>
         </span>
+        <span>
+            <div class="filebox">
+                <label for="upload">곡 선택</label>
+                <input type="file" id="upload" accept=".mp3">
+                <span id="filename"></span>
+            </div>
+        </span>
     </div>
+
+    <audio id="audio">
+        <source src="" id="src" /> </audio>
 </body>
 
 </html>

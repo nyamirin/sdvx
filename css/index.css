@@ -1,5 +1,5 @@
 body{
-
+    background-color: #333333;
 }
 
 #tooldiv{
@@ -74,4 +74,77 @@ body{
     display: inline-block;
     margin-left: 20;
     margin-right: 20;
+}
+
+#bar{
+    display: inline-block;
+    width: 400;
+    top: -10;
+}
+
+input[type=range] {
+    -webkit-appearance: none; 
+    width: 100%; 
+    height: 6px;
+    background: #d5d4d3; 
+    cursor: pointer;
+    border-radius: 0; /* iOS */
+   transition: background 450ms ease-in;
+}
+
+input[type=range]:focus {
+    outline: none; 
+}
+
+input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border: 1px solid dodgerblue;
+    border-radius:50%;
+    cursor: pointer;
+}
+input[type=range]::-moz-range-thumb{
+    -webkit-appearance: none;
+    width:10px;
+    height:10px;
+    background: #fff;
+    border: 1px solid dodgerblue;
+    border-radius:50%;
+    cursor: pointer;
+}
+
+.filebox {
+    display:inline-block;
+    margin-right: 10px;
+}
+
+
+.filebox label {
+  display: inline-block;
+  padding: .5em .75em;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+
+#filename{
+    max-width: 100;
 }
