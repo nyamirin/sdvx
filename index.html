@@ -5,11 +5,12 @@
     <link href="css/index.css" rel="stylesheet" type="text/css">
     <script src="js/jquery.js"></script>
     <script src="js/shared.js"></script>
+    <script src="js/board.js"></script>
     <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body onload="Init();">
-    <div id='ts'>a</div>
+    <div id='ts'>ts</div>
     <div id="tooldiv">
         <div class="toolbutton" id="note"><img src="img/tool/note.png"></div>
         <div class="toolbutton" id="longnote"><img src="img/tool/longnote.png"></div>
@@ -23,46 +24,43 @@
 
     <div id="maindiv">
         <div id="dispdiv">
-            <span>
-                <img src="img/bg.png">
-            </span>
-            <span>
-                <img src="img/bg.png">
-            </span>
-            <span>
-                <img src="img/bg.png">
-            </span>
-            <span>
-                <img src="img/bg.png">
-            </span>
         </div>
         <div id="playdiv">
             <span id="playbtn"><img src="img/play.png" onclick="click_play();"></span>
-            <span id="bar"><input type="range" value="0"></span>
+            <span id="playbar">
+                <span>
+                    <span id="curtime">0:00</span>
+                    <span id="duration">0:00</span>
+                </span>
+                <span id="bar"><input id="range" type="range" value="0"></span>
+            </span>
         </div>
     </div>
 
     <div id="infdiv">
-        <span>
+        <span id="lnum">
             <div>전체 마디 수</div>
-            <div><input type="number" value="8"></input></div>
+            <div><input id="lnuminput" type="number" value="10"></input></div>
         </span>
 
-        <span>
+        <span id="bnum">
             <div>마디당 박자 수</div>
-            <div><input type="number" value="8"></input></div>
+            <div><input id="beatinput" type="number" value="8"></input></div>
         </span>
+        <button id="submit" onclick="submit();">적용</button>
         <span>
             <div class="filebox">
                 <label for="upload">곡 선택</label>
                 <input type="file" id="upload" accept=".mp3">
-                <span id="filename"></span>
             </div>
+
+            <span id="filename"></span>
         </span>
     </div>
 
     <audio id="audio">
-        <source src="" id="src" /> </audio>
+        <source src="" id="src" />
+    </audio>
 </body>
 
 </html>
