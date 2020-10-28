@@ -29,21 +29,32 @@ function display() {
 function submit() {
     beat = $$("beatinput").value;
     lnum = $$("lnuminput").value;
-    obj.disp();
+    make_boards();
+    scroll_board();
 }
 
 function make_boards() {
     let txt = '';
-    for (let i = 0; i < parseInt((lnum + 1) / 2); i++)
+    $$("innerdisp").innerHTML = txt;
+    for (let i = 0; i < parseInt((parseInt(lnum) + 1) / 2); i++) {
         txt += `<span class="dispan">
                     <span class="innerspan">
                         <div class="innerdiv1">`+ (i * 2 + 1) + `</div>
-                        <div class="innerdiv2">`+ (i * 2) + `</div>
+                        <div class="innerdiv2">`+ (i * 2 + 2) + `</div>
                     </span>
                     <span class="innerspan">
                         <div class="innerdiv" id="udis` + i + `"></div>
                         <div class="innerdiv" id="ddis` + i + `"></div>
                     </span>
                 </span>`;
-    $$("dispdiv").innerHTML = txt;
+    }
+    $$("innerdisp").innerHTML = txt;
+
+    for (let i = 0; i < lnum; i++) {
+        objlist[i] = new Board((i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2))
+        objlist[i].disp();
+    }
+
+    let wd = $("#innerdisp").outerWidth(true);
+    board_width = wd - 500;
 }

@@ -3,29 +3,18 @@ var interval;
 var duration;
 var sec;
 var beat = 8;
-var lnum = 10;
+var lnum = 20;
 var objlist = [];
+var rate = 0;
+var board_width;
 
 function Init() {
     make_boards();
 
-    for (let i = 0; i < lnum; i++) {
-        objlist[i] = new Board((i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2))
-        objlist[i].disp();
-    }
-    /*
-    obj = new Board('udis0');
-    obj.disp();
-    obj2 = new Board('ddis0');
-    obj2.disp();
-
-    obj3 = new Board('udis1');
-    obj3.disp();
-    obj4 = new Board('ddis1');
-    obj4.disp();*/
-
     $('input[type=range]').on('input', function () {
         let val = $(this).val();
+        rate = val;
+        input_time(val);
         $(this).css('background', 'linear-gradient(to right, dodgerblue 0%, dodgerblue ' + val + '%, #d5d4d3 ' + val + '%, #d5d4d3 100%)');
     });
     $('input[type=range]').on('change', function () {
@@ -56,14 +45,27 @@ function nowtime() {
     sec = parseInt(ao.currentTime);
     let nmin = parseInt(sec / 60);
     let nlsec = sec % 60;
-    let rate = parseInt((sec / duration) * 100);
+    rate = parseInt((sec / duration) * 100);
     let txt;
     if (nlsec < 10) txt = ':0';
     else txt = ':';
     $$("curtime").innerText = (nmin + txt + nlsec);
     $$("range").value = rate;
-    log(rate);
     $('input[type=range]').css('background', 'linear-gradient(to right, dodgerblue 0%, dodgerblue ' + rate + '%, #d5d4d3 ' + rate + '%, #d5d4d3 100%)');
+    scroll_board();
+}
+
+function input_time(val) {
+    sec = parseInt(duration / 100 * val);
+    let nmin = parseInt(sec / 60);
+    let nlsec = sec % 60;
+    rate = parseInt((sec / duration) * 100);
+    let txt;
+    if (nlsec < 10) txt = ':0';
+    else txt = ':';
+    $$("curtime").innerText = (nmin + txt + nlsec);
+    $('input[type=range]').css('background', 'linear-gradient(to right, dodgerblue 0%, dodgerblue ' + rate + '%, #d5d4d3 ' + rate + '%, #d5d4d3 100%)');
+    scroll_board();
 }
 
 function click_play() {
@@ -77,3 +79,9 @@ function click_play() {
         clearInterval(interval);
     }
 }
+
+function scroll_board() {
+    let tls = rate * -1 * board_width / 100;
+    $$('innerdisp').style.transform = 'translateX(' + tls + 'px)';
+}
+
