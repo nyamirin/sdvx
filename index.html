@@ -13,14 +13,14 @@
 <body onload="Init();">
     <div id='ts'>ts</div>
     <div id="tooldiv">
-        <div class="toolbutton" id="note"><img src="img/tool/note.png"></div>
-        <div class="toolbutton" id="longnote"><img src="img/tool/longnote.png"></div>
-        <div class="toolbutton" id="fx"><img src="img/tool/fx.png"></div>
-        <div class="toolbutton" id="longfx"><img src="img/tool/longfx.png"></div>
-        <div class="toolbutton" id="lnove"><img src="img/tool/lnove.png"></div>
-        <div class="toolbutton" id="rnove"><img src="img/tool/rnove.png"></div>
-        <div class="toolbutton" id="delete"><img src="img/tool/delete.png"></div>
-        <div class="toolbutton" id="grid"><img src="img/tool/grid.png"></div>
+        <div class="toolbutton" id="tool0"><img src="img/tool/note.png" onclick="click_tool(0);"></div>
+        <div class="toolbutton" onclick="click_tool(1);" id="tool1"><img src="img/tool/longnote.png"></div>
+        <div class="toolbutton" onclick="click_tool(2);" id="tool2"><img src="img/tool/fx.png"></div>
+        <div class="toolbutton" onclick="click_tool(3);" id="tool3"><img src="img/tool/longfx.png"></div>
+        <div class="toolbutton" onclick="click_tool(4);" id="tool4"><img src="img/tool/lnove.png"></div>
+        <div class="toolbutton" onclick="click_tool(5);" id="tool5"><img src="img/tool/rnove.png"></div>
+        <div class="toolbutton" onclick="click_tool(6);" id="tool6"><img src="img/tool/delete.png"></div>
+        <div class="toolbutton" onclick="click_tool(7);" id="tool7"><img src="img/tool/grid.png"></div>
     </div>
 
     <div id="maindiv">
@@ -60,7 +60,6 @@
         </span>
     </div>
     <button id="tb" onclick="ctb();">tb</button>
-    <img src="img/note.png">
 
     <audio id="audio">
         <source src="" id="src" />

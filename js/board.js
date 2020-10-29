@@ -1,5 +1,6 @@
-function Board(d) {
-    this.div = d;
+function Board(i) {
+    this.th = i + 1;
+    this.div = (i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2);
     this.txt = '';
     this.disp = display;
 }
@@ -11,12 +12,12 @@ function display() {
     for (let i = 0; i < beat; i++) {
         this.txt += `
         <tr>
-          <td class="tg-9f6f"></td>
-          <td class="tg-dsic"></td>
-          <td class="tg-dsic"></td>
-          <td class="tg-dsic"></td>
-          <td class="tg-dsic"></td>
-          <td class="tg-ipzd"></td>
+          <td class="tg-9f6f" id="`+ this.th + `-l` + i + `"></td>
+          <td class="tg-dsic" id="`+ this.th + `-a` + i + `" onclick="click_ntb(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-b` + i + `" onclick="click_ntb(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-c` + i + `" onclick="click_ntb(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-d` + i + `" onclick="click_ntb(this);"></td>
+          <td class="tg-ipzd" id="`+ this.th + `-r` + i + `"></td>
         </tr>`;
     }
     this.txt += `
@@ -51,7 +52,7 @@ function make_boards() {
     $$("innerdisp").innerHTML = txt;
 
     for (let i = 0; i < lnum; i++) {
-        objlist[i] = new Board((i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2))
+        objlist[i] = new Board(i);
         objlist[i].disp();
     }
 
