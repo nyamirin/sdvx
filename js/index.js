@@ -2,7 +2,7 @@ var ao;
 var interval;
 var duration;
 var sec;
-var beat = 8;
+var beat = 3;
 var lnum = 20;
 var objlist = [];
 var rate = 0;
@@ -10,6 +10,7 @@ var board_width;
 
 function Init() {
     make_boards();
+    make_chart();
 
     $('input[type=range]').on('input', function () {
         let val = $(this).val();

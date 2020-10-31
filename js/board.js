@@ -12,12 +12,12 @@ function display() {
     for (let i = 0; i < beat; i++) {
         this.txt += `
         <tr>
-          <td class="tg-9f6f" id="`+ this.th + `-l` + i + `"></td>
-          <td class="tg-dsic" id="`+ this.th + `-a` + i + `" onclick="click_ntb(this);"></td>
-          <td class="tg-dsic" id="`+ this.th + `-b` + i + `" onclick="click_ntb(this);"></td>
-          <td class="tg-dsic" id="`+ this.th + `-c` + i + `" onclick="click_ntb(this);"></td>
-          <td class="tg-dsic" id="`+ this.th + `-d` + i + `" onclick="click_ntb(this);"></td>
-          <td class="tg-ipzd" id="`+ this.th + `-r` + i + `"></td>
+          <td class="tg-9f6f" id="`+ this.th + `-0` + (beat - i - 1) + `"></td>
+          <td class="tg-dsic" id="`+ this.th + `-1` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-2` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-3` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
+          <td class="tg-dsic" id="`+ this.th + `-4` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
+          <td class="tg-ipzd" id="`+ this.th + `-5` + (beat - i - 1) + `"></td>
         </tr>`;
     }
     this.txt += `
@@ -28,10 +28,12 @@ function display() {
 }
 
 function submit() {
-    beat = $$("beatinput").value;
-    lnum = $$("lnuminput").value;
-    make_boards();
-    scroll_board();
+    if (confirm('값을 변경하면 진행상황이 사라집니다.')) {
+        beat = $$("beatinput").value;
+        lnum = $$("lnuminput").value;
+        make_boards();
+        scroll_board();
+    }
 }
 
 function make_boards() {
