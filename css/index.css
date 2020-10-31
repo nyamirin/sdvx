@@ -210,7 +210,9 @@ input[type=range]::-moz-range-thumb{
     position: absolute;
     display: flex;
 }
-
+.innertable img{
+    left: 0;
+}
 .noteclass{
     position: absolute;
     bottom: 0;
@@ -230,6 +232,7 @@ input[type=range]::-moz-range-thumb{
     position: relative;
     border-collapse:collapse;
     width: 26;
+    top:1;
 }
 .innertable td{
     box-shadow: 0 1px white inset;
