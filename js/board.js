@@ -1,14 +1,13 @@
 function Board(i) {
     this.th = i + 1;
     this.div = (i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2);
+    this.efdiv = 'ef' + (i % 2 ? 'u' : 'd') + 'dis' + parseInt(i / 2);
     this.txt = '';
     this.disp = display;
 }
 
 function display() {
-    this.txt = `
-    <table class="tg">
-    <tbody>`;
+    this.txt = '<table class="tg"><tbody>';
     for (let i = 0; i < beat; i++) {
         this.txt += `
         <tr>
@@ -20,10 +19,7 @@ function display() {
           <td class="tg-ipzd" id="`+ this.th + `-5` + (beat - i - 1) + `"></td>
         </tr>`;
     }
-    this.txt += `
-    </tbody>
-    </table>`;
-
+    this.txt += '</tbody> </table>';
     $$(this.div).innerHTML = this.txt;
 }
 
@@ -33,6 +29,7 @@ function submit() {
         lnum = $$("lnuminput").value;
         make_boards();
         scroll_board();
+        document.documentElement.style.setProperty('--per', 100 / beat);
     }
 }
 

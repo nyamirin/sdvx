@@ -1,7 +1,8 @@
 var tool = -1;
 var chart = [];         //chart[num마디 번호][loc노트 종류][time타이밍]=0 or 1
 var split_chart = [];   //chart + [분수]
-var split = 0;
+var efchart = [];
+var split_efchart = [];
 
 function ctb() {
     log('tb');
@@ -10,7 +11,9 @@ function ctb() {
 function make_chart() {
     for (let num = 0; num < lnum; num++) {
         chart[num] = new Array();
+        efchart[num] = new Array();
         split_chart[num] = new Array();
+        split_efchart[num] = new Array();
         for (let loc = 0; loc < 6; loc++) {
             chart[num][loc] = new Array();
             split_chart[num][loc] = new Array();
@@ -18,7 +21,13 @@ function make_chart() {
                 split_chart[num][loc][sp] = new Array();
             }
         }
-
+        for (let loc = 0; loc < 2; loc++) {
+            efchart[num][loc] = new Array();
+            split_efchart[num][loc] = new Array();
+            for (let sp = 0; sp < beat; sp++) {
+                split_efchart[num][loc][sp] = new Array();
+            }
+        }
     }
 }
 
@@ -29,9 +38,8 @@ function click_ntb(tb, pass) {
     let num = id.slice(0, index);
     let loc = id[index + 1];
     let time = id.slice(index + 2);
-
     if (tool == 7) {
-        let h = tb.offsetHeight - 4;
+        let h = tb.offsetHeight;
         let ed = tb.querySelector(".innertable");
         if (ed) ed.parentNode.removeChild(ed);
         else {
@@ -51,16 +59,37 @@ function click_ntb(tb, pass) {
     }
     else if (tool == 0) {
         if (chart[num][loc][time] == 1) return;
+        if (chart[num][loc][time] == 2) {
+            tool = 6;
+            delete_note(tb.querySelector('.noteclass'));
+            tool = 0;
+        }
         chart[num][loc][time] = 1;
         let txt = "<img class='noteclass' id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
         if (chart[num][loc][time] == 2) return;
+        if (chart[num][loc][time] == 1) {
+            tool = 6;
+            delete_note(tb.querySelector('.noteclass'));
+            tool = 1;
+        }
         chart[num][loc][time] = 2;
-        tb.style.backgroundColor = 'white';
-        tb.style.boxShadow = '3px 0 black inset,-3px 0 black inset';
-        tb.setAttribute('onclick', 'delete_note(this)');
+        let txt = "<img class='noteclass' id='l" + num + "-" + loc + time + "' src='img/note/1.png' onclick='delete_note(this);'>"
+        tb.insertAdjacentHTML('beforeend', txt);
+    }
+    else if (tool == 2) {
+        let eloc;
+        let tb2 = $('#' + tb.getAttribute('id'));
+        let txt = "<img class='efclass' id='e" + num + "-" + loc + time + "' src='img/note/2-1.png' onclick='delete_note(this);'>";
+        tb.insertAdjacentHTML('beforeend', txt);
+        if (loc == 1 || loc == 3) tb2.next().append(txt);
+        else tb2.prev().append(txt);
+
+    }
+    else if (tool == 6) {
+        delete_note(tb);
     }
 }
 
@@ -76,18 +105,26 @@ function click_split(tb, i, n, last) {
             click_ntb(outter, 1);
             return;
         }
-        if (split_chart[num][loc][time][i] == 1);
-        else {
-            split_chart[num][loc][time][i] = 1;
+        if (split_chart[num][loc][time][i] == 1) return;
+        if (split_chart[num][loc][time][i] == 2) {
+            tool = 6;
+            delete_note(tb.querySelector('.snoteclass'));
+            tool = 0;
         }
-        let txt = "<img class='snoteclass' name=" + i + " id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
+        split_chart[num][loc][time][i] = 1;
+        let txt = "<img class='snoteclass' id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
+        if (split_chart[num][loc][time][i] == 2) return;
+        if (split_chart[num][loc][time][i] == 1) {
+            tool = 6;
+            delete_note(tb.querySelector('.snoteclass'));
+            tool = 1;
+        }
         split_chart[num][loc][time][i] = 2;
-        tb.style.backgroundColor = 'white';
-        tb.style.boxShadow = '2px 0 black inset,-2px 0 black inset,0 -1px white';
-
+        let txt = "<img class='snoteclass' id='l" + num + "-" + loc + time + "' src='img/note/1.png' onclick='delete_note(this);'>"
+        tb.insertAdjacentHTML('beforeend', txt);
     }
 
 }
@@ -99,6 +136,7 @@ function click_tool(t) {
 }
 
 function delete_note(img) {
+    if (tool != 6) return;
     let cls = img.getAttribute('class');
     if (cls == 'noteclass') {
         let id = img.getAttribute('id');
@@ -119,8 +157,6 @@ function delete_note(img) {
         split_chart[num][loc][time][i] = 0;
         img.parentNode.removeChild(img);
     }
-    else if (cls == 'tg-disc') { }
-
 }
 
 function mouse_over(tb) {
@@ -128,57 +164,37 @@ function mouse_over(tb) {
     check_tb(tb);
     if (tool == 0) {
         let txt = "<img class='overclass' src='img/note/0.png'>"
-        tb.insertAdjacentHTML('beforeend', txt)
+        tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
-        if (check_tb(tb) != 2)
-            tb.style.backgroundColor = 'gray';
-        tb.style.boxShadow = '3px 0 black inset,-3px 0 black inset,0 1px white inset';
-        let txt = "<span class='overclass'></span>"
-        tb.insertAdjacentHTML('beforeend', txt)
+        let txt = "<img class='overclass' src='img/note/1.png'>"
+        tb.insertAdjacentHTML('beforeend', txt);
     }
 }
 
 function mouse_out(tb) {
-    if (tb.querySelector('.innertable')) return;
+    //if (tb.querySelector('.innertable')) return;
     let over = document.querySelector(".overclass");
     if (over) over.parentNode.removeChild(over);
-    if (tool == 1) {
-        if (check_tb(tb) != 2) {
-            tb.style.backgroundColor = 'black';
-            tb.style.boxShadow = 'none';
-        }
-        else tb.style.backgroundColor = 'white';
-    }
 }
 
 function sp_over(tb) {
     if (tool == 0) {
         let txt = "<img class='overclass' src='img/note/0.png'>"
-        tb.insertAdjacentHTML('beforeend', txt)
+        tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
-        if (check_stb(tb) != 2)
-            tb.style.backgroundColor = 'gray';
-        tb.style.boxShadow = '2px 0 black inset,-2px 0 black inset';
-        let txt = "<span class='overclass'></span>"
-        tb.insertAdjacentHTML('beforeend', txt)
+        let txt = "<img class='overclass' src='img/note/1.png' onmoseout='mouse_out(this);'>"
+        tb.insertAdjacentHTML('beforeend', txt);
     }
 }
 
 function sp_out(tb) {
-    let over = document.querySelectorAll(".overclass");
-    for (let i = 0; i < over.length; i++) {
+    let over = document.querySelector(".overclass");
+    if (over) over.parentNode.removeChild(over);
+    /*for (let i = 0; i < over.length; i++) {
         if (over[i]) over[i].parentNode.removeChild(over[i]);
-    }
-    if (tool == 1) {
-        if (check_stb(tb) != 2) {
-            tb.style.backgroundColor = 'black';
-            tb.style.boxShadow = '0 1px white inset';
-            tb.parentNode.parentNode.querySelector('td').style.boxShadow = 'none';
-        }
-    }
-
+    }*/
 }
 
 function check_tb(tb) {
