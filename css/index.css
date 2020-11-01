@@ -217,6 +217,10 @@ input[type=range]::-moz-range-thumb{
     position: absolute;
     bottom: 0;
 }
+.snoteclass{
+    position: absolute;
+    bottom: 0;
+}
 .overclass{
     position: absolute;
     opacity: 0.5;

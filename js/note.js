@@ -1,5 +1,5 @@
 var tool = -1;
-var chart = [];         //chart[num마디 번호][not노트 종류][time타이밍]=0 or 1
+var chart = [];         //chart[num마디 번호][loc노트 종류][time타이밍]=0 or 1
 var split_chart = [];   //chart + [분수]
 var split = 0;
 
@@ -11,11 +11,11 @@ function make_chart() {
     for (let num = 0; num < lnum; num++) {
         chart[num] = new Array();
         split_chart[num] = new Array();
-        for (let not = 0; not < 6; not++) {
-            chart[num][not] = new Array();
-            split_chart[num][not] = new Array();
+        for (let loc = 0; loc < 6; loc++) {
+            chart[num][loc] = new Array();
+            split_chart[num][loc] = new Array();
             for (let sp = 0; sp < beat; sp++) {
-                split_chart[num][not][sp] = new Array();
+                split_chart[num][loc][sp] = new Array();
             }
         }
 
@@ -27,7 +27,7 @@ function click_ntb(tb, pass) {
     let id = tb.id;
     let index = id.indexOf('-');
     let num = id.slice(0, index);
-    let not = id[index + 1];
+    let loc = id[index + 1];
     let time = id.slice(index + 2);
 
     if (tool == 7) {
@@ -50,16 +50,17 @@ function click_ntb(tb, pass) {
         }
     }
     else if (tool == 0) {
-        if (chart[num][not][time] == 1) return;
-        chart[num][not][time] = 1;
-        let txt = "<img class='noteclass' id='0note' src='img/note/0.png'>"
+        if (chart[num][loc][time] == 1) return;
+        chart[num][loc][time] = 1;
+        let txt = "<img class='noteclass' id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
-        if (chart[num][not][time] == 2) return;
-        chart[num][not][time] = 2;
+        if (chart[num][loc][time] == 2) return;
+        chart[num][loc][time] = 2;
         tb.style.backgroundColor = 'white';
         tb.style.boxShadow = '3px 0 black inset,-3px 0 black inset';
+        tb.setAttribute('onclick', 'delete_note(this)');
     }
 }
 
@@ -68,22 +69,22 @@ function click_split(tb, i, n, last) {
     let id = outter.getAttribute('id');
     let index = id.indexOf('-');
     let num = id.slice(0, index);
-    let not = id[index + 1];
+    let loc = id[index + 1];
     let time = id.slice(index + 2);
     if (tool == 0) {
         if (i + 1 == n) {
             click_ntb(outter, 1);
             return;
         }
-        if (split_chart[num][not][time][i] == 1);
+        if (split_chart[num][loc][time][i] == 1);
         else {
-            split_chart[num][not][time][i] = 1;
+            split_chart[num][loc][time][i] = 1;
         }
-        let txt = "<img class='noteclass' id='0note' src='img/note/0.png'>"
+        let txt = "<img class='snoteclass' name=" + i + " id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
-        split_chart[num][not][time][i] = 2;
+        split_chart[num][loc][time][i] = 2;
         tb.style.backgroundColor = 'white';
         tb.style.boxShadow = '2px 0 black inset,-2px 0 black inset,0 -1px white';
 
@@ -97,7 +98,28 @@ function click_tool(t) {
     tool = t;
 }
 
-function delete_note() {
+function delete_note(img) {
+    let cls = img.getAttribute('class');
+    if (cls == 'noteclass') {
+        let id = img.getAttribute('id');
+        let index = id.indexOf('-');
+        let num = id.slice(1, index);
+        let loc = id[index + 1];
+        let time = id.slice(index + 2);
+        chart[num][loc][time] = 0;
+        img.parentNode.removeChild(img);
+    }
+    else if (cls == 'snoteclass') {
+        let id = img.getAttribute('id');
+        let index = id.indexOf('-');
+        let num = id.slice(1, index);
+        let loc = id[index + 1];
+        let time = id.slice(index + 2);
+        let i = img.getAttribute('name');
+        split_chart[num][loc][time][i] = 0;
+        img.parentNode.removeChild(img);
+    }
+    else if (cls == 'tg-disc') { }
 
 }
 
@@ -163,9 +185,9 @@ function check_tb(tb) {
     let id = tb.id;
     let index = id.indexOf('-');
     let num = id.slice(0, index);
-    let not = id[index + 1];
+    let loc = id[index + 1];
     let time = id[index + 2];
-    return chart[num][not][time];
+    return chart[num][loc][time];
 }
 
 function check_stb(tb) {
@@ -173,8 +195,8 @@ function check_stb(tb) {
     let id = outter.getAttribute('id');
     let index = id.indexOf('-');
     let num = id.slice(0, index);
-    let not = id[index + 1];
+    let loc = id[index + 1];
     let time = id.slice(index + 2);
     let sp = tb.getAttribute('name');
-    return split_chart[num][not][time][sp];
+    return split_chart[num][loc][time][sp];
 }
