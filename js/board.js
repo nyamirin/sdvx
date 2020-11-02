@@ -7,16 +7,16 @@ function Board(i) {
 }
 
 function display() {
-    this.txt = '<table class="tg"><tbody>';
+    this.txt = '<table class="tg" ><tbody>';
     for (let i = 0; i < beat; i++) {
         this.txt += `
         <tr>
-          <td class="tg-9f6f" id="`+ this.th + `-0` + (beat - i - 1) + `"></td>
+          <td class="tg-9f6f" id="`+ this.th + `-0` + (beat - i - 1) + `" onmouseover="mouse_out(this);"></td>
           <td class="tg-dsic" id="`+ this.th + `-1` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
           <td class="tg-dsic" id="`+ this.th + `-2` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
           <td class="tg-dsic" id="`+ this.th + `-3` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
           <td class="tg-dsic" id="`+ this.th + `-4` + (beat - i - 1) + `" onclick="click_ntb(this);" onmouseover="mouse_over(this);" onmouseout="mouse_out(this);"></td>
-          <td class="tg-ipzd" id="`+ this.th + `-5` + (beat - i - 1) + `"></td>
+          <td class="tg-ipzd" id="`+ this.th + `-5` + (beat - i - 1) + `" onmouseover="mouse_out(this);"></td>
         </tr>`;
     }
     this.txt += '</tbody> </table>';

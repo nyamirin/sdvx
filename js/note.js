@@ -5,7 +5,6 @@ var efchart = [];
 var split_efchart = [];
 
 function ctb() {
-    log('tb');
 }
 
 function make_chart() {
@@ -39,16 +38,16 @@ function click_ntb(tb, pass) {
     let loc = id[index + 1];
     let time = id.slice(index + 2);
     if (tool == 7) {
-        let h = tb.offsetHeight;
         let ed = tb.querySelector(".innertable");
         if (ed) ed.parentNode.removeChild(ed);
         else {
             let sp = $$('splitinput').value;
+            let h = tb.offsetHeight;
             if (sp == 1) { alert('2 이상으로 분할 가능'); }
             else {
-                let txt = `<table class="innertable"><tbody>`;
+                let txt = `<table class="innertable" name="` + sp + `"><tbody>`;
                 for (let i = 0; i < sp; i++) {
-                    txt += `<tr><td name="` + i + `" class="innertd" onclick="click_split(this,` + i + `,` + sp + `,0);" onmouseover="sp_over(this);" onmouseout="sp_out(this);"></td></tr>`;
+                    txt += `<tr><td name="` + i + `" class="innertd" onclick="click_split(this,` + i + `,` + sp + `);" onmouseover="sp_over(this);" onmouseout="sp_out(this);"></td></tr>`;
                 }
                 txt += `</tbody></table>`;
                 tb.insertAdjacentHTML('beforeend', txt);
@@ -80,9 +79,8 @@ function click_ntb(tb, pass) {
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 2) {
-        let eloc;
         let tb2 = $('#' + tb.getAttribute('id'));
-        let txt = "<img class='efclass' id='e" + num + "-" + loc + time + "' src='img/note/2-1.png' onclick='delete_note(this);'>";
+        let txt = "<img class='efclass' id='e" + num + "-" + loc + time + "' src='img/note/2.png' onclick='delete_note(this);'>";
         tb.insertAdjacentHTML('beforeend', txt);
         if (loc == 1 || loc == 3) tb2.next().append(txt);
         else tb2.prev().append(txt);
@@ -93,7 +91,7 @@ function click_ntb(tb, pass) {
     }
 }
 
-function click_split(tb, i, n, last) {
+function click_split(tb, i, n) {
     let outter = tb.parentNode.parentNode.parentNode.parentNode;
     let id = outter.getAttribute('id');
     let index = id.indexOf('-');
@@ -125,6 +123,40 @@ function click_split(tb, i, n, last) {
         split_chart[num][loc][time][i] = 2;
         let txt = "<img class='snoteclass' id='l" + num + "-" + loc + time + "' src='img/note/1.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
+    }
+    else if (tool == 2) {
+        let td = tb.parentNode.parentNode.parentNode.parentNode;
+        let tb2 = $('#' + td.getAttribute('id'));
+        let txt = "<img class='sefclass' id='e" + num + "-" + loc + time + "' src='img/note/2.png' onclick='delete_note(this);'>";
+        tb.insertAdjacentHTML('beforeend', txt);
+        let tds;
+        if (loc == 1 || loc == 3) tds = tb2.next();
+        else tds = tb2.prev();
+        tds = $$(tds.attr('id'));
+
+        let h = tds.offsetHeight;
+        let ed = tds.querySelector(".innertable");
+        if (ed) {
+            if (ed.getAttribute('name') == n) {
+                let li = tds.querySelectorAll(".innertd");
+                li[i].insertAdjacentHTML('beforeend', txt);
+            }
+            else {
+                alert('분할 수가 맞지 않습니다.');
+            }
+        }
+        else {
+            let txt2 = `<table class="innertable"><tbody>`;
+            for (let i = 0; i < n; i++) {
+                txt2 += `<tr><td name="` + i + `" class="innertd" onclick="click_split(this,` + i + `,` + n + `);" onmouseover="sp_over(this);" onmouseout="sp_out(this);"></td></tr>`;
+            }
+            txt2 += `</tbody></table>`;
+            tds.insertAdjacentHTML('beforeend', txt2);
+            ed = tds.querySelector(".innertable");
+            ed.style.height = h;
+            let li = tds.querySelectorAll(".innertd");
+            li[i].insertAdjacentHTML('beforeend', txt);
+        }
     }
 
 }
@@ -161,21 +193,22 @@ function delete_note(img) {
 
 function mouse_over(tb) {
     if (tb.querySelector('.innertable')) return;
-    check_tb(tb);
     if (tool == 0) {
         let txt = "<img class='overclass' src='img/note/0.png'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
     else if (tool == 1) {
-        let txt = "<img class='overclass' src='img/note/1.png'>"
+        let txt = "<img class='overclass' src='img/note/1.png' onmouseover='mouse_out(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
 }
 
 function mouse_out(tb) {
+    if (tool == 1 && tb.getAttribute('class') == 'tg-dsic') return;
     //if (tb.querySelector('.innertable')) return;
-    let over = document.querySelector(".overclass");
-    if (over) over.parentNode.removeChild(over);
+    let over = document.querySelectorAll(".overclass");
+    for (let i = 0; i < over.length; i++)
+        over[i].parentNode.removeChild(over[i]);
 }
 
 function sp_over(tb) {

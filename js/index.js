@@ -83,6 +83,5 @@ function click_play() {
 function scroll_board() {
     let tls = rate * -1 * board_width / 100;
     $$('innerdisp').style.transform = 'translateX(' + tls + 'px)';
-    //$$('innerdisp2').style.transform = 'translateX(' + tls + 'px)';
 }
 
