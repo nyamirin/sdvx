@@ -37,7 +37,7 @@ function click_ntb(tb, pass) {
     let num = id.slice(0, index);
     let loc = id[index + 1];
     let time = id.slice(index + 2);
-    if (tool == 7) {
+    if (tool == 7) {//split
         let ed = tb.querySelector(".innertable");
         if (ed) ed.parentNode.removeChild(ed);
         else {
@@ -56,9 +56,9 @@ function click_ntb(tb, pass) {
             }
         }
     }
-    else if (tool == 0) {
-        if (chart[num][loc][time] == 1) return;
-        if (chart[num][loc][time] == 2) {
+    else if (tool == 0) {//note
+        if (chart[num][loc][time] == 1) return;//already exist
+        if (chart[num][loc][time] == 2) {//longnote exist
             tool = 6;
             delete_note(tb.querySelector('.noteclass'));
             tool = 0;
@@ -67,9 +67,9 @@ function click_ntb(tb, pass) {
         let txt = "<img class='noteclass' id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
-    else if (tool == 1) {
-        if (chart[num][loc][time] == 2) return;
-        if (chart[num][loc][time] == 1) {
+    else if (tool == 1) {//longnote
+        if (chart[num][loc][time] == 2) return;//already exist
+        if (chart[num][loc][time] == 1) {//note exist
             tool = 6;
             delete_note(tb.querySelector('.noteclass'));
             tool = 1;
@@ -78,15 +78,21 @@ function click_ntb(tb, pass) {
         let txt = "<img class='noteclass' id='l" + num + "-" + loc + time + "' src='img/note/1.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
-    else if (tool == 2) {
+    else if (tool == 2) {//effect
+        if (split_chart[num][loc][time] == 1) return;//already exist
+        if (split_chart[num][loc][time] == 2) {//longeffect exist
+            tool = 6;
+            delete_note(tb.querySelector('.snoteclass'));
+            tool = 0;
+        }
         let tb2 = $('#' + tb.getAttribute('id'));
         let txt = "<img class='efclass' id='e" + num + "-" + loc + time + "' src='img/note/2.png' onclick='delete_note(this);'>";
         tb.insertAdjacentHTML('beforeend', txt);
         if (loc == 1 || loc == 3) tb2.next().append(txt);
         else tb2.prev().append(txt);
-
+        efchart[num][parseInt((parseInt(loc) - 1) / 2)][time] = 1;
     }
-    else if (tool == 6) {
+    else if (tool == 6) {//delete
         delete_note(tb);
     }
 }
@@ -98,13 +104,14 @@ function click_split(tb, i, n) {
     let num = id.slice(0, index);
     let loc = id[index + 1];
     let time = id.slice(index + 2);
-    if (tool == 0) {
-        if (i + 1 == n) {
+
+    if (tool == 0) {//note
+        if (i + 1 == n) {//bottom
             click_ntb(outter, 1);
             return;
         }
-        if (split_chart[num][loc][time][i] == 1) return;
-        if (split_chart[num][loc][time][i] == 2) {
+        if (split_chart[num][loc][time][i] == 1) return;//already exist
+        if (split_chart[num][loc][time][i] == 2) {//longnote exist
             tool = 6;
             delete_note(tb.querySelector('.snoteclass'));
             tool = 0;
@@ -113,9 +120,9 @@ function click_split(tb, i, n) {
         let txt = "<img class='snoteclass' id='n" + num + "-" + loc + time + "' src='img/note/0.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
-    else if (tool == 1) {
-        if (split_chart[num][loc][time][i] == 2) return;
-        if (split_chart[num][loc][time][i] == 1) {
+    else if (tool == 1) {//longnote
+        if (split_chart[num][loc][time][i] == 2) return;//already exist
+        if (split_chart[num][loc][time][i] == 1) {//note exist
             tool = 6;
             delete_note(tb.querySelector('.snoteclass'));
             tool = 1;
@@ -124,31 +131,49 @@ function click_split(tb, i, n) {
         let txt = "<img class='snoteclass' id='l" + num + "-" + loc + time + "' src='img/note/1.png' onclick='delete_note(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
-    else if (tool == 2) {
+    else if (tool == 2) {//effect
+        if (i + 1 == n) {//bottom
+            click_ntb(outter, 1);
+            return;
+        }
         let td = tb.parentNode.parentNode.parentNode.parentNode;
         let tb2 = $('#' + td.getAttribute('id'));
         let txt = "<img class='sefclass' id='e" + num + "-" + loc + time + "' src='img/note/2.png' onclick='delete_note(this);'>";
-        tb.insertAdjacentHTML('beforeend', txt);
-        let tds;
+        let tds;//sibling td
         if (loc == 1 || loc == 3) tds = tb2.next();
         else tds = tb2.prev();
         tds = $$(tds.attr('id'));
-
         let h = tds.offsetHeight;
         let ed = tds.querySelector(".innertable");
         if (ed) {
             if (ed.getAttribute('name') == n) {
+                if (split_chart[num][loc][time][i] == 1) return;//already exist
+                if (split_chart[num][loc][time][i] == 2) {//longeffect exist
+                    tool = 6;
+                    delete_note(tb.querySelector('.snoteclass'));
+                    tool = 0;
+                }
+                tb.insertAdjacentHTML('beforeend', txt);
                 let li = tds.querySelectorAll(".innertd");
                 li[i].insertAdjacentHTML('beforeend', txt);
+                split_efchart[num][parseInt((parseInt(loc) - 1) / 2)][time][i] = 1;
             }
             else {
                 alert('분할 수가 맞지 않습니다.');
+                return;
             }
         }
         else {
+            if (split_chart[num][loc][time][i] == 1) return;//already exist
+            if (split_chart[num][loc][time][i] == 2) {//longeffect exist
+                tool = 6;
+                delete_note(tb.querySelector('.snoteclass'));
+                tool = 0;
+            }
+            tb.insertAdjacentHTML('beforeend', txt);
             let txt2 = `<table class="innertable"><tbody>`;
             for (let i = 0; i < n; i++) {
-                txt2 += `<tr><td name="` + i + `" class="innertd" onclick="click_split(this,` + i + `,` + n + `);" onmouseover="sp_over(this);" onmouseout="sp_out(this);"></td></tr>`;
+                txt2 += `<tr><td name="` + n + `" class="innertd" onclick="click_split(this,` + i + `,` + n + `);" onmouseover="sp_over(this);" onmouseout="sp_out(this);"></td></tr>`;
             }
             txt2 += `</tbody></table>`;
             tds.insertAdjacentHTML('beforeend', txt2);
@@ -156,6 +181,7 @@ function click_split(tb, i, n) {
             ed.style.height = h;
             let li = tds.querySelectorAll(".innertd");
             li[i].insertAdjacentHTML('beforeend', txt);
+            split_efchart[num][parseInt((parseInt(loc) - 1) / 2)][time][i] = 1;
         }
     }
 
@@ -179,7 +205,7 @@ function delete_note(img) {
         chart[num][loc][time] = 0;
         img.parentNode.removeChild(img);
     }
-    else if (cls == 'snoteclass') {
+    else if (cls == 'snoteclass') {//split
         let id = img.getAttribute('id');
         let index = id.indexOf('-');
         let num = id.slice(1, index);
@@ -201,6 +227,16 @@ function mouse_over(tb) {
         let txt = "<img class='overclass' src='img/note/1.png' onmouseover='mouse_out(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
+    else if (tool == 2) {
+        let id = tb.getAttribute('id');
+        let index = id.indexOf('-');
+        let loc = id[index + 1];
+        let tb2 = $('#' + tb.getAttribute('id'));
+        let txt = "<img class='overclass' src='img/note/2.png'>";
+        tb.insertAdjacentHTML('beforeend', txt);
+        if (loc == 1 || loc == 3) tb2.next().append(txt);
+        else tb2.prev().append(txt);
+    }
 }
 
 function mouse_out(tb) {
@@ -220,16 +256,15 @@ function sp_over(tb) {
         let txt = "<img class='overclass' src='img/note/1.png' onmoseout='mouse_out(this);'>"
         tb.insertAdjacentHTML('beforeend', txt);
     }
+    else if (tool == 2);
 }
 
 function sp_out(tb) {
     let over = document.querySelector(".overclass");
     if (over) over.parentNode.removeChild(over);
-    /*for (let i = 0; i < over.length; i++) {
-        if (over[i]) over[i].parentNode.removeChild(over[i]);
-    }*/
 }
 
+/*
 function check_tb(tb) {
     let id = tb.id;
     let index = id.indexOf('-');
@@ -248,4 +283,4 @@ function check_stb(tb) {
     let time = id.slice(index + 2);
     let sp = tb.getAttribute('name');
     return split_chart[num][loc][time][sp];
-}
+}*/

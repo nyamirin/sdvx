@@ -12,6 +12,7 @@ function Init() {
     make_boards();
     make_chart();
 
+    //playtime bar
     $('input[type=range]').on('input', function () {
         let val = $(this).val();
         rate = val;

@@ -23,16 +23,6 @@ function display() {
     $$(this.div).innerHTML = this.txt;
 }
 
-function submit() {
-    if (confirm('값을 변경하면 진행상황이 사라집니다.')) {
-        beat = $$("beatinput").value;
-        lnum = $$("lnuminput").value;
-        make_boards();
-        scroll_board();
-        document.documentElement.style.setProperty('--per', 100 / beat);
-    }
-}
-
 function make_boards() {
     let txt = '';
     $$("innerdisp").innerHTML = txt;
@@ -57,4 +47,14 @@ function make_boards() {
 
     let wd = $("#innerdisp").outerWidth(true);
     board_width = wd - 500;
+}
+
+function submit() {
+    if (confirm('값을 변경하면 진행상황이 사라집니다.')) {
+        beat = $$("beatinput").value;
+        lnum = $$("lnuminput").value;
+        make_boards();
+        scroll_board();
+        document.documentElement.style.setProperty('--per', 100 / beat);
+    }
 }
